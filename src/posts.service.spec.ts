@@ -13,10 +13,29 @@ describe('PostsService', () => {
   });
 
   it('should add a new post', () => {
-    // реализуйте тест-кейс
+    const createdPost = postsService.create(post);
+
+    // Проверяем, что возвращённый пост содержит переданный текст
+    expect(createdPost.text).toBe(post.text);
+
+    // Проверяем, что сервис присвоил уникальный id
+    expect(createdPost.id).toBeDefined();
+    expect(typeof createdPost.id).toBe('string');
+
+    // Проверяем, что дата создания установлена в формате ISO
+    expect(createdPost.date).toBeDefined();
+    expect(new Date(createdPost.date).toISOString()).toBe(createdPost.date);
+
+    // Дополнительно убеждаемся, что пост действительно сохранился в сервисе
+    expect(postsService.find(createdPost.id)).toEqual(createdPost);
   });
 
   it('should find a post', () => {
-    // реализуйте тест-кейс
+    const createdPost = postsService.create(post);
+
+    const foundPost = postsService.find(createdPost.id);
+
+    // Проверяем, что find возвращает именно тот пост, который был создан
+    expect(foundPost).toEqual(createdPost);
   });
 });
